@@ -1,6 +1,6 @@
 # agent-pipeline — `ap`
 
-Trang cài đặt `ap` — app một-máy của agent-pipeline. Mỗi GitHub Release ở repo này đính kèm đúng một **Bản phát hành** — zip nguyên cây `dist\` (`ap.exe` + `gui\`) của một phiên bản. Cài ap là dán một khối PowerShell: tải bản mới nhất, giải nén vào **Thư mục cài** cố định, ghi user PATH. Không cần quyền admin, không cần token, không cần `gh`.
+Trang cài đặt `ap` — app một-máy của agent-pipeline. Mỗi GitHub Release ở repo này đính kèm đúng một **Bản phát hành** — zip nguyên cây `dist\` (`ap.exe` + `gui\` + `electron\`) của một phiên bản, khoảng 100–130 MB nén. Zip mang theo **Runtime Electron** nên máy đích không cần checkout, không cần `AP_ELECTRON`: cài xong là bare `ap` mở được Dashboard. Cài ap là dán một khối PowerShell: tải bản mới nhất, giải nén vào **Thư mục cài** cố định, ghi user PATH. Không cần quyền admin, không cần token, không cần `gh`.
 
 ## Điều kiện tiên quyết
 
@@ -50,11 +50,12 @@ ap doctor
 
 ## SmartScreen — exe chưa ký
 
-ap chưa ký số, nên lần đầu chạy `ap.exe` Windows có thể hiện hộp thoại "Windows protected your PC" với nhà phát hành "Unknown publisher". Đây là cảnh báo trên file tải về, không phải virus. Ba cách bỏ:
+ap chưa ký số, nên lần đầu chạy `ap.exe` Windows có thể hiện hộp thoại "Windows protected your PC" với nhà phát hành "Unknown publisher". Đây là cảnh báo trên file tải về, không phải virus. Bốn cách bỏ:
 
 1. Ngay ở hộp thoại: bấm "More info" rồi "Run anyway".
-2. Bỏ mark-of-the-web: chuột phải `ap.exe` (và file trong `gui\` nếu bị chặn) → Properties → tab General → tích "Unblock" → OK.
-3. Nếu Windows từ chối chạy app ngoài Microsoft Store: Settings → Apps → Advanced app settings → "Choose where to get apps" → Anywhere.
+2. Bỏ mark ở chính file zip **trước khi giải nén**: chuột phải file `ap-<version>-win-x64.zip` vừa tải → Properties → tab General → tích "Unblock" → OK, rồi mới giải nén. Cách này sạch mark cho cả cây một lượt.
+3. Bỏ mark sau khi cài: chuột phải `ap.exe` (và file trong `gui\` / `electron\` nếu bị chặn) → Properties → tab General → tích "Unblock" → OK.
+4. Nếu Windows từ chối chạy app ngoài Microsoft Store: Settings → Apps → Advanced app settings → "Choose where to get apps" → Anywhere.
 
 ## Nâng cấp
 
@@ -62,7 +63,7 @@ ap chưa ký số, nên lần đầu chạy `ap.exe` Windows có thể hiện h�
 ap upgrade
 ```
 
-`ap upgrade` hỏi Bản phát hành mới nhất rồi thay nội dung Thư mục cài (rename-dance xử lý exe đang chạy). Đã là bản mới nhất thì no-op thành công. Nâng cấp chỉ đụng máy — giữ nguyên `AP_HOME` (Hàng đợi toàn cục, danh sách Đăng ký repo, Nhật ký Runner) lẫn Hợp đồng. Sau khi cài, ap còn tự Kiểm tra bản mới tối đa một lần mỗi ngày và in đúng một dòng nhắc khi có bản mới.
+`ap upgrade` hỏi Bản phát hành mới nhất rồi thay nội dung Thư mục cài (rename-dance xử lý exe đang chạy). **Đóng Dashboard trước khi nâng cấp**: cửa sổ đang mở giữ khoá `electron.exe` trong Thư mục cài, lượt `ap upgrade` lúc đó fail an toàn — Thư mục cài nguyên vẹn, chỉ có dòng lỗi. Đã là bản mới nhất thì no-op thành công. Nâng cấp chỉ đụng máy — giữ nguyên `AP_HOME` (Hàng đợi toàn cục, danh sách Đăng ký repo, Nhật ký Runner) lẫn Hợp đồng. Sau khi cài, ap còn tự Kiểm tra bản mới tối đa một lần mỗi ngày và in đúng một dòng nhắc khi có bản mới.
 
 ## Tải bản cũ thủ công
 
